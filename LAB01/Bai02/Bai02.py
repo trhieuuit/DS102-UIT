@@ -6,6 +6,7 @@ import re
 import time
 from datetime import datetime, date
 
+
 BASE_URL = "https://lichsugia.site/lich-su-giao-dich/FPT.html"
 
 START_DATE = date(2021, 10, 9)
@@ -18,6 +19,9 @@ session = requests.Session()
 session.headers.update({
     "User-Agent": "FPT-Student-Research/1.0"
 })
+
+
+
 
 def parse_price(value):
     value = value.strip().replace(" ", "")
@@ -116,7 +120,6 @@ def crawl_page(page):
     return data
 
 
-
 all_data = []
 reached_start = False
 seen_pages = set()
@@ -128,7 +131,7 @@ for page in range(1, MAX_PAGES + 1):
     page_data = crawl_page(page)
 
     if page_data is None:
-        print("Dung do loi truy cap hoac HTML.")
+        print("Loi truy cap.")
         break
 
     if len(page_data) == 0:
@@ -141,7 +144,7 @@ for page in range(1, MAX_PAGES + 1):
     )
 
     if page_signature in seen_pages:
-        print("Trang du lieu bi lap, dung lai.")
+        print("Trang du lieu bi lap.")
         break
 
     seen_pages.add(page_signature)
@@ -166,6 +169,7 @@ for page in range(1, MAX_PAGES + 1):
         break
 
     time.sleep(DELAY)
+
     
 df = pd.DataFrame(all_data)
 
@@ -213,7 +217,7 @@ if not df.empty:
     print("Ngay ket thuc:", df["date"].max())
 
     if not reached_start:
-        print("CANH BAO: Chua xac nhan du 5 nam du lieu.")
+        print("Chua xac nhan du 5 nam du lieu.")
 
     print("\nThong ke du lieu:")
     print(df.describe())
@@ -224,8 +228,7 @@ if not df.empty:
     print("\n10 dong cuoi cung:")
     display(df.tail(10))
 
-    print("\nDONE.")
+    print("\nHoan thanh.")
 
 else:
-    print("ERROR: Khong thu thap duoc du lieu.")
-
+    print("Khong thu thap duoc du lieu.")
